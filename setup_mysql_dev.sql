@@ -1,14 +1,26 @@
--- Creates the database if it does not exist
+-- Create the development database if it doesn't exist
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 
--- Creates the user if it does not exist and sets the password
+-- Create the test database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS hbnb_test_db;
+
+-- Create the development user if it doesn't exist
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
 
--- Grants all privileges on the hbnb_dev_db database to the user
+-- Create the test user if it doesn't exist
+CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
+
+-- Grant all privileges on the development database to the development user
 GRANT ALL PRIVILEGES ON hbnb_dev_db.* TO 'hbnb_dev'@'localhost';
 
--- Grants SELECT privilege on the performance_schema database to the user
+-- Grant all privileges on the test database to the test user
+GRANT ALL PRIVILEGES ON hbnb_test_db.* TO 'hbnb_test'@'localhost';
+
+-- Grant SELECT privilege on the performance_schema to the development user
 GRANT SELECT ON performance_schema.* TO 'hbnb_dev'@'localhost';
 
--- Flush privileges to ensure that all changes take effect immediately
+-- Grant SELECT privilege on the performance_schema to the test user
+GRANT SELECT ON performance_schema.* TO 'hbnb_test'@'localhost';
+
+-- Flush privileges to ensure all changes take effect
 FLUSH PRIVILEGES;
