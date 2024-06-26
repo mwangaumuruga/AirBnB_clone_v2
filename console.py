@@ -84,17 +84,41 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, arg):
-        """Usage: create <class>
-        Create a new class instance and print its id.
+        """Usage: create <class> <param 1> <param 2> <param 3>...
+        Create a new class instance with given parameters and print its id.
         """
         argl = parse(arg)
         if len(argl) == 0:
             print("** class name missing **")
-        elif argl[0] not in HBNBCommand.__classes:
+            return
+        if argl[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
-        else:
-            print(eval(argl[0])().id)
-            storage.save()
+            return
+
+        # Create a dictionary of attributes from the arguments
+        new_instance_args = {}
+        for param in argl[1:]:
+            if '=' in param:
+                key, value = param.split('=', 1)
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+                elif '.' in value:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
+                else:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        continue
+                new_instance_args[key] = value
+
+        # Create the new instance with the provided attributes
+        new_instance = eval(argl[0])(**new_instance_args)
+        print(new_instance.id)
+        storage.new(new_instance)
+        storage.save()
 
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
