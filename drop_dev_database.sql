@@ -1,2 +1,2 @@
 -- drop_dev_database.sql
-DROP DATABASE IF EXISTS your_database_name;
+DROP DATABASE IF EXISTS hbnb_dev_db;
