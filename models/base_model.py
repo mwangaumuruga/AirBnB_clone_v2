@@ -8,6 +8,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy.orm import declarative_base
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
 import models
 
@@ -22,9 +23,11 @@ class BaseModel:
 
     TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f"
 
-    id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(DateTime, nullable=True)
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    __abstract__ = True
+    id = Column(String(60), primary_key=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)
+
 
     def __init__(self, **kwargs):
         """
@@ -61,7 +64,7 @@ class BaseModel:
         """
             save method
         """
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.utcnow()
         models.storage.new(self)
         models.storage.save()
 
